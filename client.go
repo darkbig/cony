@@ -84,6 +84,10 @@ func (c *Client) deletePublisher(pub *Publisher) {
 	delete(c.publishers, pub)
 }
 
+func (c *Client) Getttempt() int32 {
+	return c.attempt
+}
+
 // Errors returns AMQP connection level errors. Default buffer size is 100.
 // Messages will be dropped in case if receiver can't keep up
 func (c *Client) Errors() <-chan error {
