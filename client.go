@@ -84,7 +84,7 @@ func (c *Client) deletePublisher(pub *Publisher) {
 	delete(c.publishers, pub)
 }
 
-func (c *Client) Getttempt() int32 {
+func (c *Client) GetAttempt() int32 {
 	return c.attempt
 }
 
