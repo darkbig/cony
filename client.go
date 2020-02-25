@@ -88,8 +88,8 @@ func (c *Client) GetAttempt() int32 {
 	return c.attempt
 }
 
-func (c *Client) GetClient() *Client {
-	return c
+func (c *Client) GetClientRun() int32 {
+	return c.run
 }
 
 func (c *Client) TestClient() error {
