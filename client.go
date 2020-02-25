@@ -88,6 +88,19 @@ func (c *Client) GetAttempt() int32 {
 	return c.attempt
 }
 
+func (c *Client) GetClientRun() int32 {
+	return c.run
+}
+
+func (c *Client) TestClient() error {
+	conn, err := amqp.DialConfig(c.addr, c.config)
+	if err != nil {
+		return err
+	}
+	_ = conn.Close()
+	return nil
+}
+
 // Errors returns AMQP connection level errors. Default buffer size is 100.
 // Messages will be dropped in case if receiver can't keep up
 func (c *Client) Errors() <-chan error {
