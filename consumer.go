@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"errors"
 
 	"github.com/streadway/amqp"
 )
@@ -87,6 +88,7 @@ func (c *Consumer) serve(client mqDeleter, ch mqChannel) {
 			return
 		case d, ok := <-deliveries: // deliveries will be closed once channel is closed (disconnected from network)
 			if !ok {
+				_ = c.reportErr(errors.New("channel closed."))
 				return
 			}
 			c.deliveries <- d
