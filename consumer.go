@@ -78,7 +78,7 @@ func (c *Consumer) serve(client mqDeleter, ch mqChannel) {
 		c.autoAck,   // autoAck,
 		c.exclusive, // exclusive,
 		c.noLocal,   // noLocal,
-		false,       // noWait,
+		true,       // noWait,
 		nil,         // args Table
 	)
 	if c.reportErr(err2) {
