@@ -38,6 +38,11 @@ func (c *Consumer) Errors() <-chan error {
 	return c.errs
 }
 
+// Tag returns tag
+func (c *Consumer) Tag() string {
+	return c.tag
+}
+
 // Cancel this consumer.
 //
 // This will CLOSE Deliveries() channel
