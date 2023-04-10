@@ -48,4 +48,5 @@ type mqChannel interface {
 	NotifyClose(chan *amqp.Error) chan *amqp.Error
 	Publish(string, string, bool, bool, amqp.Publishing) error
 	Qos(int, int, bool) error
+	Errors() chan *amqp.Error
 }

@@ -1,6 +1,7 @@
 package cony
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"sync"
@@ -35,6 +36,11 @@ func (c *Consumer) Deliveries() <-chan amqp.Delivery {
 // Errors returns channel with AMQP channel level errors
 func (c *Consumer) Errors() <-chan error {
 	return c.errs
+}
+
+// Tag returns tag
+func (c *Consumer) Tag() string {
+	return c.tag
 }
 
 // Cancel this consumer.
@@ -72,7 +78,7 @@ func (c *Consumer) serve(client mqDeleter, ch mqChannel) {
 		c.autoAck,   // autoAck,
 		c.exclusive, // exclusive,
 		c.noLocal,   // noLocal,
-		false,       // noWait,
+		true,        // noWait,
 		nil,         // args Table
 	)
 	if c.reportErr(err2) {
@@ -87,9 +93,13 @@ func (c *Consumer) serve(client mqDeleter, ch mqChannel) {
 			return
 		case d, ok := <-deliveries: // deliveries will be closed once channel is closed (disconnected from network)
 			if !ok {
+				_ = c.reportErr(errors.New("read message form deliveries failed"))
 				return
 			}
 			c.deliveries <- d
+		case <-ch.Errors():
+			_ = c.reportErr(errors.New("channel closed"))
+			return
 		}
 	}
 }
